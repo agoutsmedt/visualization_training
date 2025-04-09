@@ -13,9 +13,7 @@ author:
 date: last-modified
 date-format: long
 
-lang: fr
-filters: [/home/agoutsmedt/Nextcloud/Research/R/slides/pandoc-quotation.lua]
-quot-lang: fr
+lang: en
 editor: source
 bibliography: references.bib  
 
