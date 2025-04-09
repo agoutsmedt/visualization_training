@@ -2,10 +2,28 @@
 title: "How to Make Great Data Visualisations"
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
 ```{r}
-1 + 1
+library(tidyverse)
+if(str_detect(getwd(), "agoutsmedt")) data_path <- "/home/agoutsmedt/Nextcloud/Research/data"
+
+data_ispole <- read_csv2(file.path(data_path, "data_ispole.csv")) %>% 
+  janitor::clean_names()
 ```
+
+# General Considerations
+
+## What's a good graph
+
+## Theoretical principles 1: 
+
+## Theoretical principles 2: 
+
+## Theoretical principles 3: 
+
+# Practical considerations: playing with data
+
+## Presenting dataset
+
+ISPOLE data
+
+## 
