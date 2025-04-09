@@ -1,0 +1,45 @@
+project:
+  title: "visualisation_training"
+author: 
+  - name: "Aurélien Goutsmedt"
+    affiliation:
+      - name: "ICHEC Brussels Management School"
+      - name: "UC Louvain, ISPOLE"
+    email: "aurelien.goutsmedt@uclouvain.be" 
+  - name: "Thomas Laloux"
+    affiliation:
+      - name: "UC Louvain, ISPOLE"
+    email: "thomas.laloux@uclouvain.be"
+date: last-modified
+date-format: long
+
+lang: fr
+filters: [/home/agoutsmedt/Nextcloud/Research/R/slides/pandoc-quotation.lua]
+quot-lang: fr
+editor: source
+bibliography: references.bib  
+
+format:
+  revealjs: 
+    theme: 
+     - solarized
+     - custom_solarized.scss
+    css: custom.css
+    transition: convex
+    slide-number: true
+    toc: false 
+    toc-depth: 1
+    toc-title: "Training Content"
+    slide-level: 2
+    embed-resources: true
+    view-distance: 100
+    progress: true
+    width: 1200
+    margin: 0.01
+    incremental: true
+    lightbox: true
+    center: true
+    cap-location: top
+    hide-inactive-cursor: true
+    mouse-wheel: true
+    link-external-newwindow: true
