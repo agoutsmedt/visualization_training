@@ -8,24 +8,6 @@ if(str_detect(getwd(), "agoutsmedt")) data_path <- "/home/agoutsmedt/Nextcloud/R
 
 data_ispole <- read_csv2(file.path(data_path, "data_ispole.csv")) %>% 
   janitor::clean_names()
-
-institute_cols <- c("cespol",
-                    "cecri",
-                    "cee",
-                    "cmap",
-                    "globalit",
-                    "dvlp")
-data_ispole %>% 
-  separate_longer_delim(identifiants_institut_pole, delim = "¦") %>% 
-  mutate(institut_cleaned = str_trim(identifiants_institut_pole)) %>% 
-  # create new institue cols
-  mutate(cespol = str_detect(institut_cleaned, regex("cespol", ignore_case = TRUE))) %>% 
-  mutate(cecri = str_detect(institut_cleaned, regex("cecri", ignore_case = TRUE))) %>%
-  mutate(cee = str_detect(institut_cleaned, regex("cee", ignore_case = TRUE))) %>%
-  mutate(cmap = str_detect(institut_cleaned, regex("cmap", ignore_case = TRUE))) %>%
-  mutate(globalit = str_detect(institut_cleaned, regex("globalit", ignore_case = TRUE))) %>%
-  mutate(dvlp = str_detect(institut_cleaned, regex("dvlp", ignore_case = TRUE)))
-
 ```
 
 # General Considerations
@@ -44,43 +26,4 @@ data_ispole %>%
 
 ISPOLE data
 
-## Counting publications
-
-```{r}
-data_ispole %>% 
-  count(annee) %>% 
-  #boxplot
-  ggplot(aes(y = n)) +
-  geom_boxplot() +
-  geom_point(x = 0) +
-  theme_minimal() +
-  labs(title = "Number of publications per year",
-       x = NULL,
-       y = "Number of publications")
-```
-
-```{r}
-data_ispole %>% 
-  count(annee) %>% 
-  #barplot
-  ggplot(aes(x = annee, y = n)) +
-  geom_col() +
-  geom_line() +
-  theme_minimal() +
-  labs(title = "Number of publications per year",
-       x = NULL,
-       y = "Number of publications")
-```
-
-```{r}
-data_ispole %>% 
-  count(annee) %>% 
-  #barplot
-  ggplot(aes(x = annee, y = n)) +
-  geom_col(aes(fill = annee)) +
-  theme_minimal() +
-  labs(title = "Number of publications per year",
-       x = NULL,
-       y = "Number of publications")
-```
-
+## 
