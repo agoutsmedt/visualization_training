@@ -10,20 +10,84 @@ data_ispole <- read_csv2(file.path(data_path, "data_ispole.csv")) %>%
   janitor::clean_names()
 ```
 
+## What makes a great data visualisation?
+
+:::{.fragment .center-content}
+### One thing's for sure: it's never a pie chart...
+
+![](/pictures/pie_chart_meme.png){width=60%}
+:::
+
 # General Considerations
 
-## What's a good graph
+## 
 
-## Theoretical principles 1: 
+:::{.columns}
+:::{.column .highlight-last width=50%}
+### @healyDataVisualizationPractical2018 *Data Visualization: A Practical Introduction*. Princeton University Press.
 
-## Theoretical principles 2: 
+- General discussion on commong issues regarding data visualizations
+- Applications to social sciences
+- Focus on R package `ggplot2` [@ggplot2]
+:::
+:::{.column .center-content width=50%}
+![](/pictures/healy_cover.png){width=90%}
+:::
+:::
 
-## Theoretical principles 3: 
+## Why visualizing data?
+
+:::{.columns .small-text}
+:::{.column .highlight-last width=55%}
+- Exploring your data (identifying patterns and problems, etc...)
+  - Extract information intuitively, efficiently, and accurately
+
+:::{.fragment .center-content}
+![](/pictures/ascombe_scatterplot.png){width=53%}
+:::
+:::
+:::{.column .highlight-last width=45%}
+- **Discovering relationships** in your data
+- **Communicating information** with precision, in a concise way
+- Displaying your **main results**
+- More sociological dimensions: bolster **credibility**
+- ... **but, it is not sufficient to "look at data" for good analysis, and anyway, it comes with some risks**
+:::
+:::
+
+## Edward Tufte's main principle
+
+:::{.columns}
+:::{.column .fragment .highlight-last .tiny-text width=45%}
+> Graphical excellence is the well-designed presentation of interesting data—a matter of substance, of statistics, and of design. ... [It] consists of complex ideas communicated with clarity, precision, and efficiency. ... [It] is that which gives to the viewer the greatest number of ideas in the shortest time with the **least ink in the smallest space**. ... [It] is nearly always multivariate. ... And graphical excellence requires telling the truth about the data. [@tufteVisual1983, 53]
+
+:::
+:::{.column .fragment .center-content width=55%}
+![](/pictures/napoleon_campaign.png){width=96% .lightbox}
+![](/pictures/monstruous_costs.png){width=48% .lightbox}
+![](/pictures/tufte_boxplots.png){width=48% .lightbox}
+
+:::
+:::
+
+## Other criteria
+
+## Three hurdles towards great data visualisation
+
+## Bad tastes
+
+## Bad data (use)
+
+## Perception issues: colors
+
+## Perception issues: shapes and scales
 
 # Practical considerations: playing with data
+
+## Slides ggplot2
 
 ## Presenting dataset
 
 ISPOLE data
 
-## 
+## References

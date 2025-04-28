@@ -15,7 +15,8 @@ date-format: long
 
 lang: en
 editor: source
-bibliography: references.bib  
+bibliography: references.bib
+csl: taylor-and-francis-apa.csl
 
 format:
   revealjs: 
