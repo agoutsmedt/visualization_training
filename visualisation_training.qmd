@@ -108,7 +108,7 @@ peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
 - Integrated with R and the tidyverse suite
 
 
-## ADD EXAMPLES
+## ADD EXAMPLES OF NICE FIGURES
 
 ## How ggplot2 Works
 
