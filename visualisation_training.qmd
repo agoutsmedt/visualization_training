@@ -124,7 +124,7 @@ peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
 :::  
 :::{.fragment}
 
-**=>Plots are built incrementally by adding the components piece by piece**
+**=>Plots are built incrementally by adding components piece by piece**
 :::
 
 ## How ggplot2 Works
