@@ -124,7 +124,7 @@ peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
 :::  
 :::{.fragment}
 
-**=>Plots are built incrementally by adding components piece by piece**
+**=>Plots are built incrementally by adding the components piece by piece**
 :::
 
 ## How ggplot2 Works
@@ -134,10 +134,10 @@ peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
 
 :::{.smaller}
 
-- Data: The dataset used to generate the plot.
-- Mapping: Specifies which variables from the dataset are mapped to visual properties (aesthetics) like position, color, or size.
-- Geom: Refers to the geometric objects (e.g., points, lines, bars) that represent data on the plot=>The type of plot you want to create. *You can combine multiple geoms: e.g., points with a regression line*.
-- Then the details can be improved
+- ***Data***: The dataset used to generate the plot.
+- ***Mapping***: Specifies which variables from the dataset are mapped to visual properties (aesthetics) like position, color, or size.
+- ***Geom***: Refers to the geometric objects (e.g., points, lines, bars) that represent data on the plot=>The type of plot you want to create. *You can combine multiple geoms: e.g., points with a regression line*.
+- ***Then*** the details can be improved!
 :::
 
 # Examples
@@ -360,7 +360,7 @@ data_ispole%>%
   ggplot(aes(annee))+
   geom_bar(fill='darkseagreen',color="black")+
   theme_pubclean()+
-  theme(plot.title =element_text(size=20,hjust=0.5))+  labs(x=NULL,y=NULL,title="Publications by Year in ISPOLE" )
+  theme(plot.title =element_text(size=20,hjust=0.5))+  labs(x=NULL,y=NULL,title="Evolution of ISPOLE's Publication Activity Over Time" )
 ``` 
 
 :::
@@ -369,11 +369,35 @@ data_ispole%>%
 
 ## Title Length Across Publication Types
 
-::: {.fragment}
+::: {.fragment-index=1}
+
+- *What would be a good way to visualize this?*
+
+:::
+
+::: {.fragment-index=2}
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| output: true
+#| fig-height: 3.5
+#| fig-width: 8
+data_ispole%>%select(type_de_publication,n_titre)%>%glimpse
+``` 
+
+:::
+
+::: {.notes}
+**Aurelien**, Je pense de nouveau qu'il y a probobalement un meilleur moyen de montrer ça :-P
+:::
+
+# Title Length Across Publication Types
+
 
 - What would be a good way to visualize this?
 
-:::
+
 
 ::: {.fragment}
 ```{r}
