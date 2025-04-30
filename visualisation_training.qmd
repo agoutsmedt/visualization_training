@@ -108,7 +108,7 @@ peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
 - Integrated with R and the tidyverse suite
 
 
-## ADD EXAMPLES OF NICE FIGURES
+## ADD EXAMPLES OF FIGURES (NICE ONES)
 
 ## How ggplot2 Works
 
@@ -333,12 +333,39 @@ data_ispole=data_ispole%>%mutate(annee=as.numeric(annee))
 
 data_ispole%>%
   ggplot(aes(annee))+
-  geom_bar(fill='darkseagreen',color="black")+
-  theme_pubclean()+
-  labs(x=NULL,y=NULL,title="Number of Publications by Year in ISPOLE" )
+  geom_bar(fill='darkseagreen',color="black")+scale_x_continuous(breaks=c(2010,2024))+
+  theme(
+    panel.grid.major.y=element_line(color="black",linetype="dashed"),
+    panel.grid.minor.y=element_line(color="red",linetype="dotted"))
 ``` 
 
 :::
+
+## Example Plot: Number of Publications by Year
+
+
+**Now add the details**
+
+::: {.fragment}
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| output-location: fragment
+#| fig-height: 3.5
+#| fig-width: 8
+
+data_ispole%>%
+  ggplot(aes(annee))+
+  geom_bar(fill='darkseagreen',color="black")+
+  theme_pubclean()+
+  theme(plot.title =element_text(size=20,hjust=0.5))+  labs(x=NULL,y=NULL,title="Publications by Year in ISPOLE" )
+``` 
+
+:::
+
+
 
 ## Title Length Across Publication Types
 
