@@ -4,13 +4,14 @@ title: "How to Make Great Data Visualisations"
 
 ```{r}
 library(tidyverse)
-#if(str_detect(getwd(), "agoutsmedt")) {data_path <- "/home/agoutsmedt/Nextcloud/Research/data"}
-data_ispole=read.csv2("/Users/thomaslaloux/Downloads/data_ispole.csv",sep=";")%>% 
-  janitor::clean_names()%>%
-  mutate( n_titre=nchar(titre),
-peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
-#data_ispole <- read_csv2(file.path(data_path, "data_ispole.csv")) %>% 
-#  janitor::clean_names()
+if(str_detect(getwd(), "agoutsmedt")) {data_path <- "/home/agoutsmedt/Nextcloud/Research/data"
+} else {
+  data_path <- "/Users/thomaslaloux/Downloads/"
+}
+data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>% 
+  janitor::clean_names() %>%
+  mutate(n_titre = nchar(titre),
+         peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
 ```
 
 ## What makes a great data visualisation?
@@ -84,29 +85,37 @@ peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
 
 ## Perception issues: shapes and scales
 
-#Part 2: Practical Data Visualization with ggplot2
+# Part 2: Practical Data Visualization with ggplot2
 
 ## What is ggplot2 ?
 
+:::{.highlight-last}
 - **ggplot2** is a data visualization package for R developed by Hadley Wickham.
 - It lets you build complex plots from simple building blocks.
 - Inspired by the Grammar of Graphics (Wilkinson, 2005) — a system for describing and thinking about graphics.
 
-:::{.fragment .small-text .text-center}
+:::{.fragment .small-text}
 *The grammar describes a consistent syntax for the construction of a wide range of complex graphics by breaking them into simple parts, such as data, shapes, colors, and labels. By enabling the concise specification of these components, it shifts the focus from choosing predefined chart types to systematically defining what to show and how to show it*
 
 :::
-
+:::
 
 
 ## Why should you use ggplot2?
 
+:::{.highlight-last}
 - Powerful and flexible
-- Grammar of Graphics: Customize almost every visual aspect
+- Grammar of Graphics: 
+  - Stems from a coherent logics of visualization, which helps to develop reflexivity
+  - Customize almost every visual aspect
 - Intuitive syntax once you understand the grammar
 - Active community, extensive documentation, updates, and extension (packages)
 - Integrated with R and the tidyverse suite
+:::
 
+:::{.notes}
+- coherent logics: push you to ask yourself the good questions : which geom will I use ? With wich data?
+:::
 
 ## ADD EXAMPLES OF FIGURES (NICE ONES)
 
