@@ -174,7 +174,7 @@ For convenience, we can say that our problems tend to come in three varieties. S
 
 ## What is ggplot2 ?
 
-:::{.highlight-last}
+:::{.highlight-last .small-text}
 - **ggplot2** is a data visualization package for R developed by Hadley @ggplot2.
 - It lets you build complex plots from simple building blocks.
 - Inspired by the Grammar of Graphics (Wilkinson, 2005) — a system for describing and thinking about graphics.
@@ -241,7 +241,6 @@ To add additional metadata: context, annotations, and references. A metadata lay
 
 :::
 
-
 ## How ggplot2 Works: Three main Components
 
 :::{.highlight-last .small-text}
@@ -263,57 +262,50 @@ changes in the default legend,
 theme,
 :::
 
-# Examples
-
 ## Presenting the dataset : ISPOLE publications in DIAL {.smaller}
 
 :::{.tiny-text .center-content}
 ```{r}
 #| echo: false
 #| output: true
-#| fig.width: 12
-#kable(head(data_ispole))
-glimpse(data_ispole)
+# kable(head(data_ispole))
+glimpse(data_ispole, width = 250)
 ``` 
 :::
 ::: {.notes}
-Thomas: je me chargerai d'améliorer un peu ça
 :::
 
 
 ## Example Plot: Number of Publications by Year
 
-::: {.fragment}
+::: {.fragment .highlight-last}
 
 **Start with the data and the mapping:**
 
 :::
 
-::: {.fragment}
+::: {.fragment .center-content}
 
 ```{r}
 #| echo: true
-#| message: false
-#| warning: false
 #| fig-height: 3.5
 #| output-location: fragment
-#| fig-width: 8
+#| fig-width: 10
 
-
-ggplot(data = data_ispole, aes(x=annee))
+ggplot(data = data_ispole, aes(x = annee))
 ``` 
 
 :::
 
 ## Example Plot: Number of Publications by Year
 
-::: {.fragment}
+::: {.fragment .highlight-last}
 
 **Identify the Issue : Bad Encoding?**
 
 :::
 
-::: {.fragment}
+::: {.fragment .tiny-text}
 
 ```{r}
 #| echo: false
@@ -321,12 +313,12 @@ ggplot(data = data_ispole, aes(x=annee))
 #| warning: false
 
 data_ispole %>%
-  mutate(n_lettre=nchar(annee)) %>%
-  select(annee,n_lettre) %>%
-  arrange(-n_lettre) %>%
-   select(annee)%>%
+  mutate(n_lettre = nchar(annee)) %>%
+  select(annee, n_lettre) %>%
+  filter(n_lettre > 4) %>%
+  select(annee) %>%
   knitr::kable() %>%
-  kableExtra::kable_styling(font_size = 12)
+  kableExtra::kable_styling(font_size = 11)
 ``` 
 
 :::
@@ -339,7 +331,7 @@ data_ispole %>%
 
 :::
 
-::: {.fragment}
+::: {.fragment .center-content}
 
 ```{r}
 #| echo: true
@@ -347,24 +339,24 @@ data_ispole %>%
 #| warning: false
 #| output-location: fragment
 #| fig-height: 3.5
-#| fig-width: 8
+#| fig-width: 10
 
 data_ispole %>%
   mutate(annee = as.numeric(annee)) %>%
-  ggplot(aes(x=annee))
+  ggplot(aes(x = annee))
 ``` 
 
 :::
 
 ## Example Plot: Number of Publications by Year
 
-::: {.fragment}
+::: {.fragment .highlight-last}
 
 **Now add the geom**
 
 :::
 
-::: {.fragment}
+::: {.fragment .center-content}
 
 ```{r}
 #| echo: true
@@ -372,11 +364,11 @@ data_ispole %>%
 #| warning: false
 #| output-location: fragment
 #| fig-height: 3.5
-#| fig-width: 8
+#| fig-width: 10
 
 data_ispole %>%
-  mutate(annee = as.numeric(x=annee)) %>%
-  ggplot(data=.,aes(x=annee)) +
+  mutate(annee = as.numeric(x = annee)) %>%
+  ggplot(data = ., aes(x = annee)) +
   geom_bar()
 ``` 
 
@@ -386,11 +378,11 @@ data_ispole %>%
 
 ::: {.fragment}
 
-**Now add the geom**
+**Choose another geom**
 
 :::
 
-::: {.fragment}
+::: {.fragment .center-content}
 
 ```{r}
 #| echo: true
@@ -398,11 +390,11 @@ data_ispole %>%
 #| warning: false
 #| output-location: fragment
 #| fig-height: 3.5
-#| fig-width: 8
+#| fig-width: 10
 
 data_ispole %>%
   mutate(annee = as.numeric(annee)) %>%
-  ggplot(aes(x=annee)) +
+  ggplot(aes(x = annee)) +
   geom_boxplot()
 ``` 
 
@@ -416,7 +408,7 @@ data_ispole %>%
 
 :::
 
-::: {.fragment}
+::: {.fragment .center-content}
 
 
 ```{r}
@@ -424,14 +416,14 @@ data_ispole %>%
 #| message: false
 #| warning: false
 #| fig-height: 3.5
-#| fig-width: 8
+#| fig-width: 10
 #| output-location: fragment
 
 
 
 data_ispole %>%
   mutate(annee = as.numeric(annee)) %>%
-  ggplot(data=.,aes(x=annee, fill = peer_review)) +
+  ggplot(data = ., aes(x = annee, fill = peer_review)) +
   geom_bar()
 ``` 
 
@@ -443,24 +435,23 @@ data_ispole %>%
 
 **Now add the details**
 
-
-:::
-
-::: {.fragment}
-
 - First, install some useful extensions to ggplot2
+:::
+::: {.fragment .center-content}
 ```{r}
 #| echo: true
 #| message: false
 #| warning: false
-library(openxlsx)
-library(ggpubr)
-library(hrbrthemes)
-library(ggsci)
-library(see)
-library(gghighlight)
+#| output-location: fragment
+# library(openxlsx)
+library(ggpubr) # additional themes
+library(hrbrthemes) # additional themes
+library(ggsci) # additional color palettes
+library(see) # additional color palettes
+library(gghighlight) # highlighting features
 
-data_ispole <- data_ispole %>% mutate(annee = as.numeric(annee))
+data_ispole <- data_ispole %>% 
+  mutate(annee = as.numeric(annee))
 ``` 
 
 :::
@@ -471,8 +462,6 @@ data_ispole <- data_ispole %>% mutate(annee = as.numeric(annee))
 **Now add the details**
 
 ::: {.fragment}
-
-<div style="max-height: 175px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;">
 
 ```{r}
 #| echo: true
@@ -481,30 +470,25 @@ data_ispole <- data_ispole %>% mutate(annee = as.numeric(annee))
 #| eval: false
 
 data_ispole %>%
-  ggplot(data=.,aes(x=annee)) +
+  ggplot(data = ., aes(x = annee)) +
   geom_bar(fill = "darkseagreen", color = "black") +
   scale_x_continuous(breaks = c(2010, 2024)) +
-  theme(
-    panel.grid.major.y = element_line(color = "black", linetype = "dashed"),
-    panel.grid.minor.y = element_line(color = "red", linetype = "dotted")
-  )
+  theme(panel.grid.major.y = element_line(color = "black", linetype = "dashed"),
+        panel.grid.minor.y = element_line(color = "red", linetype = "dotted"))
 ``` 
-
-</div> <!-- Output section -->
 
 ::: 
 
-::: {.fragment}
+::: {.fragment .center-content}
 
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
-#| output-location: fragment
 #| fig-height: 3.5
-#| fig-width: 8
+#| fig-width: 10
 
-  ggplot(data=data_ispole,aes(x=annee)) +
+ggplot(data = data_ispole, aes(x = annee)) +
   geom_bar(fill = "darkseagreen", color = "black") +
   scale_x_continuous(breaks = c(2010, 2024)) +
   theme(
@@ -520,16 +504,16 @@ data_ispole %>%
 
 **Now add the details**
 
-::: {.fragment}
+::: {.fragment .center-content}
 
 ```{r}
 #| echo: true
 #| output-location: fragment
 #| fig-height: 3.5
-#| fig-width: 8
+#| fig-width: 10
 
 
-  ggplot(data=data_ispole,aes(x=annee)) +
+ggplot(data = data_ispole, aes(x = annee)) +
   geom_bar(fill = "darkseagreen", color = "black") +
   theme_pubclean() +
   theme(plot.title = element_text(size = 20, hjust = 0.5)) +
@@ -542,13 +526,10 @@ data_ispole %>%
 
 ## Title Length Across Publication Types
 
-::: {.fragment-index=1}
+:::{.fragment .nonincremental .highlight-last}
+- What would be a good way to visualize this?
 
-- *What would be a good way to visualize this?*
-
-:::
-
-::: {.fragment-index=2}
+::: {.very-small-text}
 ```{r}
 #| echo: false
 #| message: false
@@ -557,24 +538,21 @@ data_ispole %>%
 #| fig-height: 3.5
 #| fig-width: 8
 data_ispole %>%
-+     select(type_de_publication, n_titre)%>%mutate(type_de_publication=factor(type_de_publication))%>%
-+     summary()
+  select(type_de_publication, n_titre) %>%
+  mutate(type_de_publication = factor(type_de_publication)) %>%
+  summary() %>% 
+  kable()
 ``` 
 
 :::
-
-::: {.notes}
-**Aurelien**, Je pense de nouveau qu'il y a probobalement un meilleur moyen de montrer ça :-P
 :::
 
-# Title Length Across Publication Types
+::: {.notes}
+:::
 
+## Title Length Across Publication Types
 
-- What would be a good way to visualize this?
-
-
-
-::: {.fragment}
+::: {.fragment .center-content}
 ```{r}
 #| echo: true
 #| message: false
@@ -582,10 +560,9 @@ data_ispole %>%
 #| output: true
 #| output-location: fragment
 #| fig-height: 3.5
-#| fig-width: 8
+#| fig-width: 10
 
-  ggplot(data=data_ispole,aes(x = type_de_publication, y = n_titre))
-  
+ggplot(data = data_ispole, aes(x = type_de_publication, y = n_titre))
 ``` 
 
 :::
@@ -599,51 +576,46 @@ data_ispole %>%
 #| message: false
 #| warning: false
 #| output: false
+#|
+types_to_keep <- c(
+  "Monographie (Book)",
+  "Contribution à ouvrage collectif (Book Chapter)",
+  "Article de périodique (Journal article)",
+  "Thèse (Dissertation)",
+  "Communication à un colloque (Conference Paper)",
+  "Document de travail (Working Paper)"
+)
 
-
-data_ispole %>%
-  filter(
-    type_de_publication == "Monographie (Book)" |
-      type_de_publication == "Contribution à ouvrage collectif (Book Chapter)" |
-      type_de_publication == "Article de périodique (Journal article)" |
-      type_de_publication == "Thèse (Dissertation)" |
-      type_de_publication == "Communication à un colloque (Conference Paper)" |
-      type_de_publication == "Document de travail (Working Paper)"
-  ) -> data_ispole
+data_ispole <- data_ispole %>%
+  filter(type_de_publication %in% types_to_keep)
 ```
 
-::: {.fragment}
-
+::: {.fragment .highlight-last .small-text}
 - Visualize the data through a boxplot
 
-:::
-
-::: {.fragment}
-
-
+::: {.fragment .center-content}
 ```{r}
 #| echo: true
-#| message: false
-#| warning: false
-#| output: false
-#| fig-height: 3.5
+#| output: true
+#| fig-height: 3
 #| fig-width: 8
-data_ispole %>%
-  ggplot(aes(x = type_de_publication, y = n_titre)) +
+ggplot(data = data_ispole, aes(x = type_de_publication, y = n_titre)) +
   geom_boxplot() +
-  theme_pubclean() #
-# coord_flip()
+  theme_pubclean()
 ``` 
+:::
 
+- How could we improve this plot?
 :::
 
 ## Visualizing Title Length Across Publication Types
 
+::: {.panel-tabset .tiny-text .center-content}
+
+### New Visualisation
+
+ 
 ::: {.fragment}
-
-- How could we improve this plot?
-
-:::
 
 ```{r}
 #| echo: false
@@ -663,30 +635,6 @@ data_ispole %>%
       type_de_publication == "Document de travail (Working Paper)"
   ) -> data_ispole2
 
-data_ispole2 %>%
-  ggplot(aes(x = type_de_publication, y = n_titre)) +
-  geom_boxplot() +
-  theme_pubclean() #
-# coord_flip()
-```
-
-## Visualizing Title Length Across Publication Types
-
-::: {.panel-tabset .tiny-text .center-content}
-
-## New Visualisation
-
- 
-::: {.fragment}
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-#| output: true
-#| fig-height: 5
-#| fig-width: 12
-
 plot <- data_ispole2 %>%
   mutate(
     type_de_publication_fr = str_replace(type_de_publication, " \\s*\\([^\\)]+\\)", ""),
@@ -711,8 +659,7 @@ plot
 
 ::: 
 
-## Code
-
+### Code
 
 ```{r}
 #| echo: true
@@ -748,6 +695,7 @@ plot
 
 ## Visualizing Title Length Across Publication Types
 
+:::{.fragment .nonincremental .highlight-last}
 - Spot the modifications!
 
 ```{r}
@@ -758,33 +706,31 @@ plot
 #| fig-height: 5
 #| fig-width: 12
 
+
 library(patchwork)
 data_ispole2 %>%
   ggplot(aes(x = type_de_publication, y = n_titre)) +
   geom_boxplot() +
-  theme_pubclean()->plot2
+  theme_pubclean() -> plot2
 
-plot+plot2
+plot + plot2
 ```
-
+:::
 
 ## Visualizing Title Length Across Publication Types
 
-::: {.fragment}
+::: {.highlight-last}
 
-- Add Faceting by Another Variable (and Another Geom)
+- Add faceting by another variable (and another geom)
 
 :::
 
 ::: {.fragment}
-
-
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
 #| output: true
-#| output-location: fragment
 #| fig-height: 5
 #| fig-width: 12
 
@@ -797,13 +743,12 @@ plot + geom_jitter(show.legend = F, alpha = 0.5, shape = 21, size = 0.2) +
     plot.title = element_text(hjust = 0)
   )
 ```
-
 ::: 
 
 ## Visualizing Title Length Across Publication Types
 
 
-- Add Faceting by Another Variable (and Another Geom)
+- Add faceting by another variable (and another geom)
 
 
 ::: {.fragment}
@@ -841,7 +786,7 @@ Faceting = one chart per group.
 
 ::: {.fragment}
 
-- (Almost) Always Use Faceting When Showing Differences Across a Variable
+- (Almost) always use faceting when showing differences across a variable
 
 ::: 
 
@@ -878,7 +823,7 @@ data_ispole2 %>%
 ## General Rule
 
 
-- (Almost) Always Use Faceting When Showing Differences Across a Variable
+- (Almost) always use faceting when showing differences across a variable
 
 
 ::: {.fragment}
@@ -889,39 +834,40 @@ data_ispole2 %>%
 #| fig-width: 12
 
 data_ispole2 %>%
-    mutate(
-        type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = TRUE)
-    ) %>%
-    group_by(annee, type_de_publication_en) %>%
-    summarize(n = n(), .groups = "drop") %>%
-    complete(
-        type_de_publication_en,
-        annee = seq(min(annee), max(annee)),
-        fill = list(n = 0)
-    ) %>%
-    ungroup() %>%
-    arrange(annee) %>%
-    group_by(type_de_publication_en) %>%
-    ggplot(aes(x = annee, y = n, fill = type_de_publication_en)) +
-    geom_col(alpha=0.75,
-        show.legend = FALSE,
-        width = 0.75,
-        color = "black"  # only external borders
-    ) +
-    xlim(2010, 2024) +
-    gghighlight(
-        use_direct_label = FALSE,
-        label_params = list(),
-        unhighlighted_params = list(
-            fill = "lightgrey",
-            alpha = 0.6
-        )
-    ) +
-    scale_y_continuous(name = "Total number of publication",limits=c(0,250)) +
-    theme_ipsum(base_family = "Century Gothic") +
-    theme(axis.title.x = element_blank()) +
-    facet_wrap(. ~ arange(type_de_publication_en,n)) +
-    scale_fill_jco()
+  mutate(
+    type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = TRUE)
+  ) %>%
+  group_by(annee, type_de_publication_en) %>%
+  summarize(n = n(), .groups = "drop") %>%
+  complete(
+    type_de_publication_en,
+    annee = seq(min(annee), max(annee)),
+    fill = list(n = 0)
+  ) %>%
+  ungroup() %>%
+  arrange(annee) %>%
+  group_by(type_de_publication_en) %>%
+  ggplot(aes(x = annee, y = n, fill = type_de_publication_en)) +
+  geom_col(
+    alpha = 0.75,
+    show.legend = FALSE,
+    width = 0.75,
+    color = "black" # only external borders
+  ) +
+  xlim(2010, 2024) +
+  gghighlight(
+    use_direct_label = FALSE,
+    label_params = list(),
+    unhighlighted_params = list(
+      fill = "lightgrey",
+      alpha = 0.6
+    )
+  ) +
+  scale_y_continuous(name = "Total number of publication", limits = c(0, 250)) +
+  theme_ipsum(base_family = "Century Gothic") +
+  theme(axis.title.x = element_blank()) +
+  facet_wrap(. ~ fct_reorder(type_de_publication_en, n, .desc = TRUE)) +
+  scale_fill_jco()
 ```
 
 :::
@@ -939,11 +885,13 @@ It's especially useful when color or shape isn't enough to distinguish groups.
 
 **On Paper (No Computers)**
 
+:::{.highlight-last}
 - How would you visualize the relationship between the number of conference papers and the number of published outputs (books, journal articles, and book chapters)?
 
 - How would you compare peer-reviewed and non–peer-reviewed publications in this context?
 
 - In both cases, how would you structure your `ggplot2` code accordingly?
+:::
 
 ```{r}
 #| echo: false
