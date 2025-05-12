@@ -394,7 +394,7 @@ data_ispole %>%
 
 ::: {.fragment}
 
-**Now add the geom (bis)**
+**Now add another mapping**
 
 :::
 
@@ -809,6 +809,16 @@ plot +
 ```
 
 ::: 
+
+
+:::{.notes}
+Faceting in ggplot2 means splitting your data into subsets based on the values of one (or more) variables, and then making the same type of plot for each subset, displayed side by side (or in a grid).
+
+It's like saying: “Show me the same plot, but separately for each group.”
+
+Faceting = one chart per group.
+::: 
+
 ## General Rule
 
 ::: {.fragment}
@@ -861,33 +871,39 @@ data_ispole2 %>%
 #| fig-width: 12
 
 data_ispole2 %>%
-  mutate(
-    type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = T)
-  ) %>%
-  group_by(annee, type_de_publication_en) %>%
-  summarize(n = n(), .groups = "drop") %>%
-  complete(
-    type_de_publication_en,
-    annee = seq(min(annee), max(annee)),
-    fill = list(n = 0)
-  ) %>%
-  ungroup() %>%
-  arrange(annee) %>%
-  group_by(type_de_publication_en) %>%
-  mutate(t = cumsum(n)) %>%
-  ggplot(aes(x = annee, y = n, col = type_de_publication_en)) +
-  geom_line(
-    show.legend = F, size = 1.2 # ,fill="grey"
-  ) +
-  xlim(2010, 2024) +
-  gghighlight(use_direct_label = FALSE, label_params = list(), unhighlighted_params = list(linewidth = 0.5, color = "lightgrey")) +
-  scale_y_continuous(name = "Total number of publication") +
-  theme_ipsum(base_family = "Century Gothic") +
-  theme(axis.title.x = element_blank()) +
-  facet_wrap(
-    . ~ type_de_publication_en # ,scale="free_y"
-  ) +
-  scale_color_jco()
+    mutate(
+        type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = TRUE)
+    ) %>%
+    group_by(annee, type_de_publication_en) %>%
+    summarize(n = n(), .groups = "drop") %>%
+    complete(
+        type_de_publication_en,
+        annee = seq(min(annee), max(annee)),
+        fill = list(n = 0)
+    ) %>%
+    ungroup() %>%
+    arrange(annee) %>%
+    group_by(type_de_publication_en) %>%
+    ggplot(aes(x = annee, y = n, fill = type_de_publication_en)) +
+    geom_col(alpha=0.75,
+        show.legend = FALSE,
+        width = 0.75,
+        color = "black"  # only external borders
+    ) +
+    xlim(2010, 2024) +
+    gghighlight(
+        use_direct_label = FALSE,
+        label_params = list(),
+        unhighlighted_params = list(
+            fill = "lightgrey",
+            alpha = 0.6
+        )
+    ) +
+    scale_y_continuous(name = "Total number of publication",limits=c(0,250)) +
+    theme_ipsum(base_family = "Century Gothic") +
+    theme(axis.title.x = element_blank()) +
+    facet_wrap(. ~ arange(type_de_publication_en,n)) +
+    scale_fill_jco()
 ```
 
 :::
