@@ -216,7 +216,9 @@ For convenience, we can say that our problems tend to come in three varieties. S
 #### Legislation timeline
 
 ![](pictures/chronology_events.png){width=65%}
+#### Apparition of topics in press
 
+![](pictures/Articles on mini public.jpeg){width=65%}
 :::
 
 ## How ggplot2 Works
