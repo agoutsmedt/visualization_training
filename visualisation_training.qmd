@@ -178,8 +178,8 @@ For convenience, we can say that our problems tend to come in three varieties. S
 - **ggplot2** is a data visualization package for R developed by Hadley @ggplot2.
 - It lets you build complex plots from simple building blocks.
 - Inspired by the Grammar of Graphics (Wilkinson, 2005) — a system for describing and thinking about graphics.
-  - ***A consistent syntax for building complex graphics by combining simple components***
-  - ***Shifts the focus from choosing predefined chart types to **systematically defining** what to show and how to show it***.
+  - *A consistent syntax for building complex graphics by combining simple components*
+  - *Shifts the focus from choosing predefined chart types to systematically defining what to show and how to show it*.
 
 :::
 
@@ -231,6 +231,14 @@ For convenience, we can say that our problems tend to come in three varieties. S
 
 :::{.notes}
 Coherent logics: push you to ask yourself the good questions : which geom will I use ? With wich data?
+It is useful to think about the purpose of each layer before it is added. In general, there are three purposes for a layer:
+
+To display the data. We plot the raw data for many reasons, relying on our skills at pattern detection to spot gross structure, local structure, and outliers. This layer appears on virtually every graphic. In the earliest stages of data exploration, it is often the only layer.
+
+To display a statistical summary of the data. As we develop and explore models of the data, it is useful to display model predictions in the context of the data. Showing the data helps us improve the model, and showing the model helps reveal subtleties of the data that we might otherwise miss. Summaries are usually drawn on top of the data.
+
+To add additional metadata: context, annotations, and references. A metadata layer displays background context, annotations that help to give meaning to the raw data, or fixed references that aid comparisons across panels. Metadata can be useful in the background and foreground.
+
 :::
 
 
@@ -244,6 +252,15 @@ Coherent logics: push you to ask yourself the good questions : which geom will I
   *You can combine multiple geoms — for example, points with a regression line*  
 - ***Then*** the details can be refined!
 
+:::
+
+:::{.notes}
+We first give the data frame (it only works on data frame),
+then the aesthetics which is the role of the variables : x, y, sample, colour, group, etc.,
+a geometry which is the type of representation : points, lines, box plots, histograms, etc.,
+modification of the default axes,
+changes in the default legend,
+theme,
 :::
 
 # Examples
@@ -306,7 +323,8 @@ ggplot(data = data_ispole, aes(x=annee))
 data_ispole %>%
   mutate(n_lettre=nchar(annee)) %>%
   select(annee,n_lettre) %>%
-  arrange(n_lettre) %>%
+  arrange(-n_lettre) %>%
+   select(annee)%>%
   knitr::kable() %>%
   kableExtra::kable_styling(font_size = 12)
 ``` 
@@ -425,11 +443,12 @@ data_ispole %>%
 
 **Now add the details**
 
+
 :::
 
 ::: {.fragment}
 
-
+- First, install some useful extensions to ggplot2
 ```{r}
 #| echo: true
 #| message: false
@@ -531,14 +550,15 @@ data_ispole %>%
 
 ::: {.fragment-index=2}
 ```{r}
-#| echo: true
+#| echo: false
 #| message: false
 #| warning: false
 #| output: true
 #| fig-height: 3.5
 #| fig-width: 8
 data_ispole %>%
-  select(type_de_publication, n_titre) 
++     select(type_de_publication, n_titre)%>%mutate(type_de_publication=factor(type_de_publication))%>%
++     summary()
 ``` 
 
 :::
@@ -656,11 +676,6 @@ data_ispole2 %>%
 
 ## New Visualisation
 
-::: {.fragment}
-
-- Spot the modifications!
-
-::: 
  
 ::: {.fragment}
 
@@ -733,6 +748,8 @@ plot
 
 ## Visualizing Title Length Across Publication Types
 
+- Spot the modifications!
+
 ```{r}
 #| echo: false
 #| message: false
@@ -793,6 +810,7 @@ plot + geom_jitter(show.legend = F, alpha = 0.5, shape = 21, size = 0.2) +
 
 
 ```{r}
+#| echo: true
 #| output: false
 #| fig-height: 5
 #| fig-width: 12
@@ -908,6 +926,14 @@ data_ispole2 %>%
 
 :::
 
+:::{.notes}
+Why use faceting?
+It helps compare patterns across groups without cluttering a single plot.
+
+You preserve the same axes and scales, making differences and similarities easier to spot.
+
+It's especially useful when color or shape isn't enough to distinguish groups.
+:::
 
 ## Exercice
 
