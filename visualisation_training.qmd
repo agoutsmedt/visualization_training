@@ -178,11 +178,9 @@ For convenience, we can say that our problems tend to come in three varieties. S
 - **ggplot2** is a data visualization package for R developed by Hadley @ggplot2.
 - It lets you build complex plots from simple building blocks.
 - Inspired by the Grammar of Graphics (Wilkinson, 2005) — a system for describing and thinking about graphics.
+  - ***A consistent syntax for building complex graphics by combining simple components***
+  - ***Shifts the focus from choosing predefined chart types to **systematically defining** what to show and how to show it***.
 
-:::{.fragment .small-text}
-*The grammar describes a consistent syntax for the construction of a wide range of complex graphics by breaking them into simple parts, such as data, shapes, colors, and labels. By enabling the concise specification of these components, it shifts the focus from choosing predefined chart types to __systematically__ defining what to show and how to show it*
-
-:::
 :::
 
 ## Why should you use ggplot2?
@@ -197,9 +195,6 @@ For convenience, we can say that our problems tend to come in three varieties. S
 - Integrated with R and the tidyverse suite
 :::
 
-:::{.notes}
-- coherent logics: push you to ask yourself the good questions : which geom will I use ? With wich data?
-:::
 
 ## ggplot2 examples
 
@@ -216,28 +211,39 @@ For convenience, we can say that our problems tend to come in three varieties. S
 #### Legislation timeline
 
 ![](pictures/chronology_events.png){width=65%}
-#### Apparition of topics in press
+
+#### Number of articles
 
 ![](pictures/Articles on mini public.jpeg){width=65%}
+
 :::
+
 
 ## How ggplot2 Works
 
 :::{.highlight-last .small-text}
 - **Plots as a combination of different layers**
   - ggplot2 builds plots by **layers**, each layer adds a different component to the plot
-  - The concept behind ggplot2 divides plot into three different fundamental parts: Plot = data + aesthetics + geometry.
+  - The concept behind ggplot2 divides plot into three different fundamental parts: Plot = Data + Variable + Geometric Object.
   - Then you customize plot details (the theme) with elements e.g., the scales, grid, labels, and legends using specific functions
 - $\Rightarrow$ **Plots are built incrementally by adding components piece by piece** 
-:::  
+:::
+
+:::{.notes}
+Coherent logics: push you to ask yourself the good questions : which geom will I use ? With wich data?
+:::
+
 
 ## How ggplot2 Works: Three main Components
 
 :::{.highlight-last .small-text}
-- ***Data***: The dataset used to generate the plot.
-- ***Mapping***: Specifies which variables from the dataset are mapped to visual properties (aesthetics) like position, color, or size.
-- ***Geom***: Refers to the geometric objects (e.g., points, lines, bars) that represent data on the plot $\Rightarrow$ The type of plot you want to create. *You can combine multiple geoms: e.g., points with a regression line*.
-- ***Then*** the details can be improved!
+- ***Data***: The dataset used to generate the plot  
+- ***Mapping*** (*aesthetics*): Specifies which variables from the dataset are mapped to visual properties like position, color, or size
+- ***Geom***: Refers to the geometric objects (e.g., points, lines, bars) that represent data on the plot
+  $\Rightarrow$ This defines the type of plot you want to create.  
+  *You can combine multiple geoms — for example, points with a regression line*  
+- ***Then*** the details can be refined!
+
 :::
 
 # Examples
@@ -277,7 +283,7 @@ Thomas: je me chargerai d'améliorer un peu ça
 #| fig-width: 8
 
 
-ggplot(data = data_ispole, aes(annee))
+ggplot(data = data_ispole, aes(x=annee))
 ``` 
 
 :::
@@ -298,10 +304,9 @@ ggplot(data = data_ispole, aes(annee))
 #| warning: false
 
 data_ispole %>%
-  filter(nchar(annee) > 4) %>%
-  select(annee) %>%
-  select(annee) %>%
-  slice_head(n = 6) %>%
+  mutate(n_lettre=nchar(annee)) %>%
+  select(annee,n_lettre) %>%
+  arrange(n_lettre) %>%
   knitr::kable() %>%
   kableExtra::kable_styling(font_size = 12)
 ``` 
@@ -328,7 +333,33 @@ data_ispole %>%
 
 data_ispole %>%
   mutate(annee = as.numeric(annee)) %>%
-  ggplot(aes(annee))
+  ggplot(aes(x=annee))
+``` 
+
+:::
+
+## Example Plot: Number of Publications by Year
+
+::: {.fragment}
+
+**Now add the geom**
+
+:::
+
+::: {.fragment}
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| output-location: fragment
+#| fig-height: 3.5
+#| fig-width: 8
+
+data_ispole %>%
+  mutate(annee = as.numeric(x=annee)) %>%
+  ggplot(data=.,aes(x=annee)) +
+  geom_bar()
 ``` 
 
 :::
@@ -353,8 +384,8 @@ data_ispole %>%
 
 data_ispole %>%
   mutate(annee = as.numeric(annee)) %>%
-  ggplot(aes(annee)) +
-  geom_bar()
+  ggplot(aes(x=annee)) +
+  geom_boxplot()
 ``` 
 
 :::
@@ -382,7 +413,7 @@ data_ispole %>%
 
 data_ispole %>%
   mutate(annee = as.numeric(annee)) %>%
-  ggplot(aes(annee, fill = peer_review)) +
+  ggplot(data=.,aes(x=annee, fill = peer_review)) +
   geom_bar()
 ``` 
 
@@ -422,16 +453,39 @@ data_ispole <- data_ispole %>% mutate(annee = as.numeric(annee))
 
 ::: {.fragment}
 
+<div style="max-height: 175px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;">
+
 ```{r}
 #| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+
+data_ispole %>%
+  ggplot(data=.,aes(x=annee)) +
+  geom_bar(fill = "darkseagreen", color = "black") +
+  scale_x_continuous(breaks = c(2010, 2024)) +
+  theme(
+    panel.grid.major.y = element_line(color = "black", linetype = "dashed"),
+    panel.grid.minor.y = element_line(color = "red", linetype = "dotted")
+  )
+``` 
+
+</div> <!-- Output section -->
+
+::: 
+
+::: {.fragment}
+
+```{r}
+#| echo: false
 #| message: false
 #| warning: false
 #| output-location: fragment
 #| fig-height: 3.5
 #| fig-width: 8
 
-data_ispole %>%
-  ggplot(aes(annee)) +
+  ggplot(data=data_ispole,aes(x=annee)) +
   geom_bar(fill = "darkseagreen", color = "black") +
   scale_x_continuous(breaks = c(2010, 2024)) +
   theme(
@@ -455,8 +509,8 @@ data_ispole %>%
 #| fig-height: 3.5
 #| fig-width: 8
 
-data_ispole %>%
-  ggplot(aes(annee)) +
+
+  ggplot(data=data_ispole,aes(x=annee)) +
   geom_bar(fill = "darkseagreen", color = "black") +
   theme_pubclean() +
   theme(plot.title = element_text(size = 20, hjust = 0.5)) +
@@ -484,8 +538,7 @@ data_ispole %>%
 #| fig-height: 3.5
 #| fig-width: 8
 data_ispole %>%
-  select(type_de_publication, n_titre) %>%
-  glimpse()
+  select(type_de_publication, n_titre) 
 ``` 
 
 :::
@@ -510,14 +563,34 @@ data_ispole %>%
 #| output-location: fragment
 #| fig-height: 3.5
 #| fig-width: 8
-data_ispole %>%
-  ggplot(aes(x = type_de_publication, y = n_titre))
+
+  ggplot(data=data_ispole,aes(x = type_de_publication, y = n_titre))
+  
 ``` 
 
 :::
 
 
 ## Visualizing Title Length Across Publication Types
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| output: false
+
+
+data_ispole %>%
+  filter(
+    type_de_publication == "Monographie (Book)" |
+      type_de_publication == "Contribution à ouvrage collectif (Book Chapter)" |
+      type_de_publication == "Article de périodique (Journal article)" |
+      type_de_publication == "Thèse (Dissertation)" |
+      type_de_publication == "Communication à un colloque (Conference Paper)" |
+      type_de_publication == "Document de travail (Working Paper)"
+  ) -> data_ispole
+```
 
 ::: {.fragment}
 
@@ -536,14 +609,6 @@ data_ispole %>%
 #| fig-height: 3.5
 #| fig-width: 8
 data_ispole %>%
-  filter(
-    type_de_publication == "Monographie (Book)" |
-      type_de_publication == "Contribution à ouvrage collectif (Book Chapter)" |
-      type_de_publication == "Article de périodique (Journal article)" |
-      type_de_publication == "Thèse (Dissertation)" |
-      type_de_publication == "Communication à un colloque (Conference Paper)" |
-      type_de_publication == "Document de travail (Working Paper)"
-  ) %>%
   ggplot(aes(x = type_de_publication, y = n_titre)) +
   geom_boxplot() +
   theme_pubclean() #
@@ -577,6 +642,7 @@ data_ispole %>%
       type_de_publication == "Communication à un colloque (Conference Paper)" |
       type_de_publication == "Document de travail (Working Paper)"
   ) -> data_ispole2
+
 data_ispole2 %>%
   ggplot(aes(x = type_de_publication, y = n_titre)) +
   geom_boxplot() +
@@ -585,6 +651,10 @@ data_ispole2 %>%
 ```
 
 ## Visualizing Title Length Across Publication Types
+
+::: {.panel-tabset .tiny-text .center-content}
+
+## New Visualisation
 
 ::: {.fragment}
 
@@ -625,6 +695,61 @@ plot
 ```
 
 ::: 
+
+## Code
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| output: false
+#| fig-height: 5
+#| fig-width: 12
+
+plot <- data_ispole2 %>%
+  mutate(
+    type_de_publication_fr = str_replace(type_de_publication, " \\s*\\([^\\)]+\\)", ""),
+    type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = T)
+  ) %>%
+  ggplot(aes(x = reorder(type_de_publication_en, n_titre), y = n_titre, fill = reorder(type_de_publication_en, n_titre))) +
+  geom_boxplot(show.legend = F) +
+  theme_pubclean(base_family = "Century Gothic") +
+  coord_flip() +
+  scale_y_continuous(name = "Number of Words in Titles", expand = c(0, 0)) +
+  theme(
+    axis.title.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line(color = "grey", linetype = "dotted"),
+    plot.title.position = "plot", # Align relative to full plot area
+    plot.title = element_text(hjust = 0)
+  ) +
+  scale_fill_oi() +
+  ggtitle("Number of words in the title according to the type of Publication")
+plot
+```
+
+:::
+
+## Visualizing Title Length Across Publication Types
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| output: true
+#| fig-height: 5
+#| fig-width: 12
+
+library(patchwork)
+data_ispole2 %>%
+  ggplot(aes(x = type_de_publication, y = n_titre)) +
+  geom_boxplot() +
+  theme_pubclean()->plot2
+
+plot+plot2
+```
+
 
 ## Visualizing Title Length Across Publication Types
 
