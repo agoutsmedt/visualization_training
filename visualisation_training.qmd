@@ -1,17 +1,23 @@
 ---
 title: "How to Make Great Data Visualisations"
+message: false
+warning: false
 ---
 
 ```{r}
 library(tidyverse)
-if(str_detect(getwd(), "agoutsmedt")) {data_path <- "/home/agoutsmedt/Nextcloud/Research/data"
+library(knitr)
+if (str_detect(getwd(), "agoutsmedt")) {
+  data_path <- "/home/agoutsmedt/Nextcloud/Research/data"
 } else {
   data_path <- "/Users/thomaslaloux/Downloads/"
 }
-data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>% 
+data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
   janitor::clean_names() %>%
-  mutate(n_titre = nchar(titre),
-         peer_review=ifelse(peer_review=="peer-reviewed","Peer","Non Peer"))
+  mutate(
+    n_titre = nchar(titre),
+    peer_review = ifelse(peer_review == "peer-reviewed", "Peer-reviewed", "Non peer-reviewed")
+  )
 ```
 
 ## What makes a great data visualisation?
@@ -53,11 +59,11 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 :::
 
 ::: {.column .highlight-last width="45%"}
--   **Discovering relationships** in your data
+-   **Revealing relationships** in your data
 -   **Communicating information** with precision, in a concise way
--   Displaying your **main results**
--   More sociological dimensions: bolster **credibility**
--   ... **but, it is not sufficient to "look at data" for good analysis, and anyway, it comes with some risks**
+-   Highlighting your **main findings**
+-   A more sociological dimension: bolstering **credibility**
+-   ... **but, it is not sufficient to "look at data" for sound analysis---and it comes with some risks**
 :::
 :::
 
@@ -73,15 +79,94 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 :::
 :::
 
-## Other criteria
+:::{.notes}
+- Beyond "data to ink ratio":
+  - honesty about the data (don't cheat yourself with data)
+  - in a way memorable and saying something interesting
+:::
 
-## Three hurdles towards great data visualisation
+## Three hurdles to great data visualisation
+
+:::{.highlight-last}
+- **Bad taste**: unappealing aestethics and bad design
+- **Bad data**: misuse of data, errors or missing values, etc.
+- **Perception issues**: how people perceive and process what they are looking at differs depending on cognitive and contextual factors
+:::
+
+:::{.notes}
+For convenience, we can say that our problems tend to come in three varieties. Some are strictly aesthetic. The graph we are looking at is in some way tacky, tasteless, or a hodgepodge of ugly or inconsistent design choices. Some are substantive. Here, our graph has problems that are due to the data being presented. Good taste might make things look better, but what we really need is to make better use of the data we have, or get new information and plot that instead. And some problems are perceptual. In these cases, even with good aesthetic qualities and good data, the graph will be confusing or misleading because of how people perceive and process what they are looking at. It is important to understand that these elements, while often found together, are distinct from one another.
+:::
 
 ## Bad tastes
 
+:::{.columns .fragment}
+
+:::{.column .center-content width="50%"}
+![](pictures/bad_taste_graph.png)
+:::
+
+:::{.column .highlight-last width="50%"}
+- Why it's bad?
+  - Duplicated information
+  - Unnecessary complexity and design features
+  - Difficulty to extract the information correctly
+:::
+:::
+
 ## Bad data (use)
 
+:::{.columns .fragment}
+
+:::{.column .center-content width="60%"}
+![](pictures/world_values_wrong.png){width="69%" .lightbox}
+![](pictures/world_values_clearer.png){width="69%" .lightbox}
+:::
+
+:::{.column .highlight-last width="40%"}
+- Why it's bad?
+  - cherry-picking of data
+  - Misleading the audience
+- Multiply types of visualizations, vary scales, etc. to avoid cheating yourself
+:::
+:::
+
+:::{.notes}
+- Well-designed figures with little or no junk in their component parts are not by themselves a defense against cherry-picking your data or presenting information in a misleading way. Indeed, it is even possible that, in a world where people are on guard against junky infographics, the “halo effect” accompanying a wellproduced figure might make it easier to mislead some audiences. Or, perhaps more common, good aesthetics does not make it much harder for you to mislead yourself as you look at your data.
+- scholars who knew the World Values Survey data underlying the graph noticed something else. The graph reads as though people were asked to say whether they thought it was essential to live in a democracy, and the results plotted show the percentage of respondents who said “Yes,” presumably in contrast to those who said “No.” But in fact the survey question asked respondents to rate the importance of living in a democracy on a ten-point scale, with 1 being “Not at all Important” and 10 being “Absolutely Important.”
+:::
+
+## Perception issues: some examples
+
+:::{.center-content}
+![](pictures/excel_3d.png){width="55%"}
+![](pictures/curve_converging.png){width="55%"}
+:::
+
 ## Perception issues: colors
+
+:::{.columns}
+:::{.column .center-content width="33%"}
+![](pictures/herman_grid.png){width="90%"}
+:::
+:::{.column .highlight-last .tiny-text width="33%"}
+- Hue: What color is it?
+  - Red, blue, green, yellow, etc.
+- Chroma (or Saturation): How pure or intense is the color?
+  - washed-out or grayish vs. vivid or rich
+- Luminance (or Lightness/Brightness): How light or dark is the color?
+  - close to white vs. close to black
+:::
+
+:::{.column .fragment .center-content width="33%"}
+![](pictures/palettes.png){width="90%"}
+:::
+:::
+
+:::{.notes}
+- Five palettes generated from R’s color space library. From top to bottom, the sequential grayscale palette varies only in luminance, or brightness. The sequential blue palette varies in both luminance and chrominance (or intensity). The third sequential palette varies in luminance, chrominance, and hue. The fourth palette is diverging, with a neutral midpoint. The fifth features balanced hues, suitable for unordered categories.
+- The upshot is that we should generally not pick colors in an ad hoc way. It is too easy to go astray. In addition to the considerations we have been discussing, we also want to avoid producing plots that confuse people who are color-blind, for example. Fortunately, almost all the work has been done for us already. Different color spaces have been defined and standardized in ways that account for these uneven or nonlinear aspects of human color perception
+- Choose appropriate palettes for what you want (types of palette like gradient, diverging, etc... means something). Taking care of different color-blindness.
+:::
 
 ## Perception issues: shapes and scales
 
@@ -90,16 +175,15 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 ## What is ggplot2 ?
 
 :::{.highlight-last}
-- **ggplot2** is a data visualization package for R developed by Hadley Wickham.
+- **ggplot2** is a data visualization package for R developed by Hadley @ggplot2.
 - It lets you build complex plots from simple building blocks.
 - Inspired by the Grammar of Graphics (Wilkinson, 2005) — a system for describing and thinking about graphics.
 
 :::{.fragment .small-text}
-*The grammar describes a consistent syntax for the construction of a wide range of complex graphics by breaking them into simple parts, such as data, shapes, colors, and labels. By enabling the concise specification of these components, it shifts the focus from choosing predefined chart types to systematically defining what to show and how to show it*
+*The grammar describes a consistent syntax for the construction of a wide range of complex graphics by breaking them into simple parts, such as data, shapes, colors, and labels. By enabling the concise specification of these components, it shifts the focus from choosing predefined chart types to __systematically__ defining what to show and how to show it*
 
 :::
 :::
-
 
 ## Why should you use ggplot2?
 
@@ -117,53 +201,58 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 - coherent logics: push you to ask yourself the good questions : which geom will I use ? With wich data?
 :::
 
-## ADD EXAMPLES OF FIGURES (NICE ONES)
+## ggplot2 examples
 
-## How ggplot2 Works
+::: {.panel-tabset .tiny-text .center-content}
 
+#### Career paths
 
-**Plots as a combination of different layers**
+![](pictures/boe.png){width=65%}
 
-:::{.smaller}
+#### Topics characteristics
 
-  - ggplot2 builds plots by **layers**, each layer adds a different component to the plot
-  - The concept behind ggplot2 divides plot into three different fundamental parts: Plot = data + Aesthetics + Geometry.
-  - Then you customize plot details (the theme) with elements e.g., the scales, grid, labels, and legends using specific functions
- 
-:::  
-:::{.fragment}
+![](pictures/Communities_europeanisation_colored_odds.png){width=65%}
 
-**=>Plots are built incrementally by adding components piece by piece**
+#### Legislation timeline
+
+![](pictures/chronology_events.png){width=65%}
+
 :::
 
 ## How ggplot2 Works
 
+:::{.highlight-last .small-text}
+- **Plots as a combination of different layers**
+  - ggplot2 builds plots by **layers**, each layer adds a different component to the plot
+  - The concept behind ggplot2 divides plot into three different fundamental parts: Plot = data + aesthetics + geometry.
+  - Then you customize plot details (the theme) with elements e.g., the scales, grid, labels, and legends using specific functions
+- $\Rightarrow$ **Plots are built incrementally by adding components piece by piece** 
+:::  
 
-**Three Main Components of ggplot2**
+## How ggplot2 Works: Three main Components
 
-:::{.smaller}
-
+:::{.highlight-last .small-text}
 - ***Data***: The dataset used to generate the plot.
 - ***Mapping***: Specifies which variables from the dataset are mapped to visual properties (aesthetics) like position, color, or size.
-- ***Geom***: Refers to the geometric objects (e.g., points, lines, bars) that represent data on the plot=>The type of plot you want to create. *You can combine multiple geoms: e.g., points with a regression line*.
+- ***Geom***: Refers to the geometric objects (e.g., points, lines, bars) that represent data on the plot $\Rightarrow$ The type of plot you want to create. *You can combine multiple geoms: e.g., points with a regression line*.
 - ***Then*** the details can be improved!
 :::
 
 # Examples
 
-## Presenting the dataset
+## Presenting the dataset : ISPOLE publications in DIAL {.smaller}
 
-**Publications by ISPOLE researchers**, downloaded from DIAL
-
-:::{.fragment}
+:::{.tiny-text .center-content}
 ```{r}
-#| echo: true
+#| echo: false
 #| output: true
- glimpse(data_ispole)
+#| fig.width: 12
+#kable(head(data_ispole))
+glimpse(data_ispole)
 ``` 
 :::
 ::: {.notes}
-**Aurelien**, si tu sais mieux representer le dataset
+Thomas: je me chargerai d'améliorer un peu ça
 :::
 
 
@@ -186,7 +275,7 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 #| fig-width: 8
 
 
-  ggplot(data=data_ispole,aes(annee))
+ggplot(data = data_ispole, aes(annee))
 ``` 
 
 :::
@@ -206,12 +295,13 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 #| message: false
 #| warning: false
 
-data_ispole%>%filter(nchar(annee)>4)%>%select(annee)%>% 
-   select(annee) %>%
+data_ispole %>%
+  filter(nchar(annee) > 4) %>%
+  select(annee) %>%
+  select(annee) %>%
   slice_head(n = 6) %>%
-  knitr::kable()%>%
+  knitr::kable() %>%
   kableExtra::kable_styling(font_size = 12)
-  
 ``` 
 
 :::
@@ -234,8 +324,8 @@ data_ispole%>%filter(nchar(annee)>4)%>%select(annee)%>%
 #| fig-height: 3.5
 #| fig-width: 8
 
-data_ispole%>%
-  mutate(annee=as.numeric(annee))%>%
+data_ispole %>%
+  mutate(annee = as.numeric(annee)) %>%
   ggplot(aes(annee))
 ``` 
 
@@ -259,9 +349,9 @@ data_ispole%>%
 #| fig-height: 3.5
 #| fig-width: 8
 
-data_ispole%>%
-  mutate(annee=as.numeric(annee))%>%
-  ggplot(aes(annee))+
+data_ispole %>%
+  mutate(annee = as.numeric(annee)) %>%
+  ggplot(aes(annee)) +
   geom_bar()
 ``` 
 
@@ -288,11 +378,10 @@ data_ispole%>%
 
 
 
-data_ispole%>%
-  mutate(annee=as.numeric(annee))%>%
-  ggplot(aes(annee,fill=peer_review))+
+data_ispole %>%
+  mutate(annee = as.numeric(annee)) %>%
+  ggplot(aes(annee, fill = peer_review)) +
   geom_bar()
-
 ``` 
 
 :::
@@ -318,9 +407,8 @@ library(hrbrthemes)
 library(ggsci)
 library(see)
 library(gghighlight)
-  
-data_ispole=data_ispole%>%mutate(annee=as.numeric(annee))
 
+data_ispole <- data_ispole %>% mutate(annee = as.numeric(annee))
 ``` 
 
 :::
@@ -340,12 +428,14 @@ data_ispole=data_ispole%>%mutate(annee=as.numeric(annee))
 #| fig-height: 3.5
 #| fig-width: 8
 
-data_ispole%>%
-  ggplot(aes(annee))+
-  geom_bar(fill='darkseagreen',color="black")+scale_x_continuous(breaks=c(2010,2024))+
+data_ispole %>%
+  ggplot(aes(annee)) +
+  geom_bar(fill = "darkseagreen", color = "black") +
+  scale_x_continuous(breaks = c(2010, 2024)) +
   theme(
-    panel.grid.major.y=element_line(color="black",linetype="dashed"),
-    panel.grid.minor.y=element_line(color="red",linetype="dotted"))
+    panel.grid.major.y = element_line(color = "black", linetype = "dashed"),
+    panel.grid.minor.y = element_line(color = "red", linetype = "dotted")
+  )
 ``` 
 
 :::
@@ -359,17 +449,16 @@ data_ispole%>%
 
 ```{r}
 #| echo: true
-#| message: false
-#| warning: false
 #| output-location: fragment
 #| fig-height: 3.5
 #| fig-width: 8
 
-data_ispole%>%
-  ggplot(aes(annee))+
-  geom_bar(fill='darkseagreen',color="black")+
-  theme_pubclean()+
-  theme(plot.title =element_text(size=20,hjust=0.5))+  labs(x=NULL,y=NULL,title="Evolution of ISPOLE's Publication Activity Over Time" )
+data_ispole %>%
+  ggplot(aes(annee)) +
+  geom_bar(fill = "darkseagreen", color = "black") +
+  theme_pubclean() +
+  theme(plot.title = element_text(size = 20, hjust = 0.5)) +
+  labs(x = NULL, y = NULL, title = "Evolution of ISPOLE's Publication Activity Over Time")
 ``` 
 
 :::
@@ -392,7 +481,9 @@ data_ispole%>%
 #| output: true
 #| fig-height: 3.5
 #| fig-width: 8
-data_ispole%>%select(type_de_publication,n_titre)%>%glimpse
+data_ispole %>%
+  select(type_de_publication, n_titre) %>%
+  glimpse()
 ``` 
 
 :::
@@ -417,8 +508,8 @@ data_ispole%>%select(type_de_publication,n_titre)%>%glimpse
 #| output-location: fragment
 #| fig-height: 3.5
 #| fig-width: 8
-data_ispole%>%
-  ggplot(aes(x=type_de_publication,y=n_titre))
+data_ispole %>%
+  ggplot(aes(x = type_de_publication, y = n_titre))
 ``` 
 
 :::
@@ -442,20 +533,19 @@ data_ispole%>%
 #| output: false
 #| fig-height: 3.5
 #| fig-width: 8
-data_ispole%>%
+data_ispole %>%
   filter(
-     type_de_publication=="Monographie (Book)"|
-       type_de_publication== "Contribution à ouvrage collectif (Book Chapter)"|
-       type_de_publication== "Article de périodique (Journal article)"|
-     type_de_publication== "Thèse (Dissertation)"|
-       type_de_publication== "Communication à un colloque (Conference Paper)"|
-     type_de_publication== "Document de travail (Working Paper)"
-   )%>%
-  ggplot(aes(x=type_de_publication,y=n_titre))+
-  geom_boxplot()+
-theme_pubclean()#
-  #coord_flip()
-
+    type_de_publication == "Monographie (Book)" |
+      type_de_publication == "Contribution à ouvrage collectif (Book Chapter)" |
+      type_de_publication == "Article de périodique (Journal article)" |
+      type_de_publication == "Thèse (Dissertation)" |
+      type_de_publication == "Communication à un colloque (Conference Paper)" |
+      type_de_publication == "Document de travail (Working Paper)"
+  ) %>%
+  ggplot(aes(x = type_de_publication, y = n_titre)) +
+  geom_boxplot() +
+  theme_pubclean() #
+# coord_flip()
 ``` 
 
 :::
@@ -476,20 +566,20 @@ theme_pubclean()#
 #| fig-height: 5
 #| fig-width: 12
 
-data_ispole%>%
+data_ispole %>%
   filter(
-     type_de_publication=="Monographie (Book)"|
-       type_de_publication== "Contribution à ouvrage collectif (Book Chapter)"|
-       type_de_publication== "Article de périodique (Journal article)"|
-     type_de_publication== "Thèse (Dissertation)"|
-       type_de_publication== "Communication à un colloque (Conference Paper)"|
-     type_de_publication== "Document de travail (Working Paper)"
-   )->data_ispole2
-data_ispole2%>%
-  ggplot(aes(x=type_de_publication,y=n_titre))+
-  geom_boxplot()+
-theme_pubclean()#
-  #coord_flip()
+    type_de_publication == "Monographie (Book)" |
+      type_de_publication == "Contribution à ouvrage collectif (Book Chapter)" |
+      type_de_publication == "Article de périodique (Journal article)" |
+      type_de_publication == "Thèse (Dissertation)" |
+      type_de_publication == "Communication à un colloque (Conference Paper)" |
+      type_de_publication == "Document de travail (Working Paper)"
+  ) -> data_ispole2
+data_ispole2 %>%
+  ggplot(aes(x = type_de_publication, y = n_titre)) +
+  geom_boxplot() +
+  theme_pubclean() #
+# coord_flip()
 ```
 
 ## Visualizing Title Length Across Publication Types
@@ -510,25 +600,26 @@ theme_pubclean()#
 #| fig-height: 5
 #| fig-width: 12
 
-data_ispole2%>%
-mutate(
-type_de_publication_fr=str_replace(type_de_publication, " \\s*\\([^\\)]+\\)", ""),
-type_de_publication_en= gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl=T)
-)%>%
-  ggplot(aes(x=reorder(type_de_publication_en,n_titre),y=n_titre,fill=reorder(type_de_publication_en,n_titre)))+
-  geom_boxplot(show.legend = F)+
-  theme_pubclean(base_family = "Century Gothic")+
-  coord_flip()+
-  scale_y_continuous(name="Number of Words in Titles",expand=c(0,0))+
-  theme(axis.title.y = element_blank(),
-        panel.grid.major.y = element_blank(),
-        panel.grid.major.x=element_line(color='grey',linetype="dotted"),
-        plot.title.position = "plot",  # Align relative to full plot area
-        plot.title = element_text(hjust = 0))+
-  scale_fill_oi()+
-  ggtitle("Number of words in the title according to the type of Publication")->p
-p
-
+plot <- data_ispole2 %>%
+  mutate(
+    type_de_publication_fr = str_replace(type_de_publication, " \\s*\\([^\\)]+\\)", ""),
+    type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = T)
+  ) %>%
+  ggplot(aes(x = reorder(type_de_publication_en, n_titre), y = n_titre, fill = reorder(type_de_publication_en, n_titre))) +
+  geom_boxplot(show.legend = F) +
+  theme_pubclean(base_family = "Century Gothic") +
+  coord_flip() +
+  scale_y_continuous(name = "Number of Words in Titles", expand = c(0, 0)) +
+  theme(
+    axis.title.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line(color = "grey", linetype = "dotted"),
+    plot.title.position = "plot", # Align relative to full plot area
+    plot.title = element_text(hjust = 0)
+  ) +
+  scale_fill_oi() +
+  ggtitle("Number of words in the title according to the type of Publication")
+plot
 ```
 
 ::: 
@@ -553,12 +644,14 @@ p
 #| fig-height: 5
 #| fig-width: 12
 
-p+geom_jitter(show.legend = F,alpha=0.5,shape=21,size=0.2)+
-  facet_wrap(.~peer_review)+
-  theme_ipsum(base_family = "Century Gothic")+
- theme(axis.title.y = element_blank(),
-         plot.title.position = "plot",  # Align relative to full plot area
-        plot.title = element_text(hjust = 0))
+plot + geom_jitter(show.legend = F, alpha = 0.5, shape = 21, size = 0.2) +
+  facet_wrap(. ~ peer_review) +
+  theme_ipsum(base_family = "Century Gothic") +
+  theme(
+    axis.title.y = element_blank(),
+    plot.title.position = "plot", # Align relative to full plot area
+    plot.title = element_text(hjust = 0)
+  )
 ```
 
 ::: 
@@ -573,20 +666,19 @@ p+geom_jitter(show.legend = F,alpha=0.5,shape=21,size=0.2)+
 
 
 ```{r}
-#| echo: true
-#| message: false
-#| warning: false
 #| output: false
 #| fig-height: 5
 #| fig-width: 12
 
-p+
-  geom_jitter(show.legend = F,alpha=0.5,shape=21,size=0.2)+
-  facet_wrap(.~peer_review)+
-  theme_ipsum(base_family = "Century Gothic")+
- theme(axis.title.y = element_blank(),
-         plot.title.position = "plot",  # Align relative to full plot area
-        plot.title = element_text(hjust = 0))
+plot +
+  geom_jitter(show.legend = F, alpha = 0.5, shape = 21, size = 0.2) +
+  facet_wrap(. ~ peer_review) +
+  theme_ipsum(base_family = "Century Gothic") +
+  theme(
+    axis.title.y = element_blank(),
+    plot.title.position = "plot", # Align relative to full plot area
+    plot.title = element_text(hjust = 0)
+  )
 ```
 
 ::: 
@@ -602,28 +694,27 @@ p+
 
 ```{r}
 #| echo: false
-#| message: false
-#| warning: false
-#| output: true
 #| fig-height: 5
 #| fig-width: 12
 
-data_ispole2%>%
+data_ispole2 %>%
   mutate(
- type_de_publication_en= gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl=T))%>%
+    type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = T)
+  ) %>%
   group_by(annee, type_de_publication_en) %>%
   summarize(n = n(), .groups = "drop") %>%
   complete(
     type_de_publication_en,
     annee = seq(min(annee), max(annee)),
     fill = list(n = 0)
-  )%>%
-  ungroup()%>%
-  arrange(annee)%>%
-  group_by(type_de_publication_en)%>%
-  mutate(t=cumsum(n))%>%
-  ggplot(aes(x=annee,y=n,fill=type_de_publication_en))+
-  geom_col(size=1.2#,fill="grey"
+  ) %>%
+  ungroup() %>%
+  arrange(annee) %>%
+  group_by(type_de_publication_en) %>%
+  mutate(t = cumsum(n)) %>%
+  ggplot(aes(x = annee, y = n, fill = type_de_publication_en)) +
+  geom_col(
+    size = 1.2 # ,fill="grey"
   )
 ```
 
@@ -639,36 +730,36 @@ data_ispole2%>%
 
 ```{r}
 #| echo: false
-#| message: false
-#| warning: false
-#| output: true
 #| fig-height: 5
 #| fig-width: 12
 
-data_ispole2%>%
+data_ispole2 %>%
   mutate(
- type_de_publication_en= gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl=T)
-)%>%
- group_by(annee, type_de_publication_en) %>%
+    type_de_publication_en = gsub("(?<=\\()[^()]*(?=\\))(*SKIP)(*F)|.", "", type_de_publication, perl = T)
+  ) %>%
+  group_by(annee, type_de_publication_en) %>%
   summarize(n = n(), .groups = "drop") %>%
   complete(
     type_de_publication_en,
     annee = seq(min(annee), max(annee)),
     fill = list(n = 0)
-  )%>%
-  ungroup()%>%
-  arrange(annee)%>%
-  group_by(type_de_publication_en)%>%
-  mutate(t=cumsum(n))%>%
-  ggplot(aes(x=annee,y=n,col=type_de_publication_en))+
-  geom_line(show.legend = F,size=1.2#,fill="grey"
-  )+xlim(2010,2024)+
-  gghighlight(use_direct_label = FALSE, label_params = list(),unhighlighted_params=list(linewidth = 0.5,color='lightgrey')) +
-    scale_y_continuous(name="Total number of publication")+
-  theme_ipsum(base_family = "Century Gothic")+
-  theme(axis.title.x = element_blank())+
-  facet_wrap(.~type_de_publication_en#,scale="free_y"
-  )+
+  ) %>%
+  ungroup() %>%
+  arrange(annee) %>%
+  group_by(type_de_publication_en) %>%
+  mutate(t = cumsum(n)) %>%
+  ggplot(aes(x = annee, y = n, col = type_de_publication_en)) +
+  geom_line(
+    show.legend = F, size = 1.2 # ,fill="grey"
+  ) +
+  xlim(2010, 2024) +
+  gghighlight(use_direct_label = FALSE, label_params = list(), unhighlighted_params = list(linewidth = 0.5, color = "lightgrey")) +
+  scale_y_continuous(name = "Total number of publication") +
+  theme_ipsum(base_family = "Century Gothic") +
+  theme(axis.title.x = element_blank()) +
+  facet_wrap(
+    . ~ type_de_publication_en # ,scale="free_y"
+  ) +
   scale_color_jco()
 ```
 
@@ -687,125 +778,114 @@ data_ispole2%>%
 
 ```{r}
 #| echo: false
-#| message: false
-#| warning: false
-data_ispole%>%
+data_ispole %>%
   mutate(
-   book=ifelse(type_de_publication=="Monographie (Book)",1,0),
-   chapter= ifelse(type_de_publication== "Contribution à ouvrage collectif (Book Chapter)",1,0),
-    article=ifelse(type_de_publication=="Article de périodique (Journal article)",1,0),
-   conference_paper=ifelse(type_de_publication== "Communication à un colloque (Conference Paper)",1,0)
+    book = ifelse(type_de_publication == "Monographie (Book)", 1, 0),
+    chapter = ifelse(type_de_publication == "Contribution à ouvrage collectif (Book Chapter)", 1, 0),
+    article = ifelse(type_de_publication == "Article de périodique (Journal article)", 1, 0),
+    conference_paper = ifelse(type_de_publication == "Communication à un colloque (Conference Paper)", 1, 0)
     # type_de_publication== "Document de travail (Working Paper)"
-  )%>%
-  mutate(auteur_s=str_trim(auteur_s))%>%
-  tidyr::separate_rows(auteur_s,sep = ";")%>%  
-  mutate(auteur_s=trimws(auteur_s))%>%
-  group_by(auteur_s)%>%
+  ) %>%
+  mutate(auteur_s = str_trim(auteur_s)) %>%
+  tidyr::separate_rows(auteur_s, sep = ";") %>%
+  mutate(auteur_s = trimws(auteur_s)) %>%
+  group_by(auteur_s) %>%
   summarise(
-      book=sum(book),
-      chapter=sum(chapter),
-      article=sum(article),
-      conference_paper=sum(conference_paper))%>%
-  ungroup()%>%
-  mutate(total = rowSums(across(c(book,chapter,article,conference_paper))))%>%
-  filter(total>0)%>%
-  filter(conference_paper<100&book<15)->df
-data_ispole%>%
+    book = sum(book),
+    chapter = sum(chapter),
+    article = sum(article),
+    conference_paper = sum(conference_paper)
+  ) %>%
+  ungroup() %>%
+  mutate(total = rowSums(across(c(book, chapter, article, conference_paper)))) %>%
+  filter(total > 0) %>%
+  filter(conference_paper < 100 & book < 15) -> df
+data_ispole %>%
   mutate(
-    book=ifelse(type_de_publication=="Monographie (Book)",1,0),
-    chapter= ifelse(type_de_publication== "Contribution à ouvrage collectif (Book Chapter)",1,0),
-    article=ifelse(type_de_publication=="Article de périodique (Journal article)",1,0))%>%
-   
-  mutate(auteur_s=str_trim(auteur_s))%>%
-  tidyr::separate_rows(auteur_s,sep = ";")%>%  
-  mutate(auteur_s=trimws(auteur_s))%>%
-  group_by(auteur_s,peer_review)%>%
+    book = ifelse(type_de_publication == "Monographie (Book)", 1, 0),
+    chapter = ifelse(type_de_publication == "Contribution à ouvrage collectif (Book Chapter)", 1, 0),
+    article = ifelse(type_de_publication == "Article de périodique (Journal article)", 1, 0)
+  ) %>%
+  mutate(auteur_s = str_trim(auteur_s)) %>%
+  tidyr::separate_rows(auteur_s, sep = ";") %>%
+  mutate(auteur_s = trimws(auteur_s)) %>%
+  group_by(auteur_s, peer_review) %>%
   summarise(
-    book=sum(book),
-    chapter=sum(chapter),
-    article=sum(article)
-    )%>%
-  ungroup()%>%
-  mutate(total = rowSums(across(c(book,chapter,article))))%>%
-  filter(total>0)%>%
-  filter(book<15)%>%
-  inner_join(select(df,conference_paper,auteur_s),by="auteur_s")->df2
-
+    book = sum(book),
+    chapter = sum(chapter),
+    article = sum(article)
+  ) %>%
+  ungroup() %>%
+  mutate(total = rowSums(across(c(book, chapter, article)))) %>%
+  filter(total > 0) %>%
+  filter(book < 15) %>%
+  inner_join(select(df, conference_paper, auteur_s), by = "auteur_s") -> df2
 ```
 
 ## Exercice
 
 ```{r}
 #| echo: false
-#| message: false
-#| warning: false
-#| output: true
 #| fig-height: 6
 #| fig-width: 12
 
 library(patchwork)
-df%>%
-ggplot(aes(x=conference_paper,y=book))+
-  geom_count(shape=22,fill="#ED7D31",show.legend = F,,alpha=0.75)+
-  geom_smooth(show.legend=F,linetype="dashed",fill="#ED7D31",color="black",method='lm')+
-labs(x="Number of Conference Papers",y=NULL,,title="Book")  +
-  df%>%
-  ggplot(aes(x=conference_paper,y=chapter))+
-  geom_count(shape=22,fill="#5B9BD5",show.legend = F,alpha=0.75)+
-  geom_smooth(show.legend=F,linetype="dashed",fill="#5B9BD5",color="black",method='lm')+
-  labs(x="Number of Conference Papers",y=NULL,title="Book Chapter")+
-  df%>%
-  ggplot(aes(x=conference_paper,y=article))+
-  geom_count(shape=22,fill="#70AD47",show.legend = F,alpha=0.75)+
-  geom_smooth(show.legend=F,linetype="dashed",fill="#70AD47",color="black",method='lm')+
-  labs(x="Number of Conference Papers",y=NULL,title="Article")->p
+df %>%
+  ggplot(aes(x = conference_paper, y = book)) +
+  geom_count(shape = 22, fill = "#ED7D31", show.legend = F, , alpha = 0.75) +
+  geom_smooth(show.legend = F, linetype = "dashed", fill = "#ED7D31", color = "black", method = "lm") +
+  labs(x = "Number of Conference Papers", y = NULL, , title = "Book") +
+  df %>%
+  ggplot(aes(x = conference_paper, y = chapter)) +
+  geom_count(shape = 22, fill = "#5B9BD5", show.legend = F, alpha = 0.75) +
+  geom_smooth(show.legend = F, linetype = "dashed", fill = "#5B9BD5", color = "black", method = "lm") +
+  labs(x = "Number of Conference Papers", y = NULL, title = "Book Chapter") +
+  df %>%
+  ggplot(aes(x = conference_paper, y = article)) +
+  geom_count(shape = 22, fill = "#70AD47", show.legend = F, alpha = 0.75) +
+  geom_smooth(show.legend = F, linetype = "dashed", fill = "#70AD47", color = "black", method = "lm") +
+  labs(x = "Number of Conference Papers", y = NULL, title = "Article") -> p
 
-p+plot_layout(axis_titles = "collect") +
-  plot_annotation(title = "Exploring the Link Between Research Outputs and Conference Paper Counts")&theme_ipsum(base_family = "Century Gothic")
-
-  
-
+p + plot_layout(axis_titles = "collect") +
+  plot_annotation(title = "Exploring the Link Between Research Outputs and Conference Paper Counts") & theme_ipsum(base_family = "Century Gothic")
 ```
 
 ## Exercice
 
 ```{r}
 #| echo: false
-#| message: false
-#| warning: false
-#| output: true
 #| fig-height: 6
 #| fig-width: 12
 
-df2%>%
-  ggplot(aes(x=conference_paper,y=book,fill=peer_review,color=peer_review))+
-  geom_count(shape=22,alpha=0.75)+
-  geom_smooth(show.legend=F,linetype="dashed",method='lm')+
-  labs(x="Number of Conference Papers",y=NULL,title="Book",color=NULL,fill=NULL)  + scale_fill_manual(values=c( "#00AFBB", "#E7B800"))+
-  scale_color_manual(values=c( "#00AFBB", "#E7B800"))+
-  guides(size = "none")+
-  df2%>%
-  ggplot(aes(x=conference_paper,y=chapter,fill=peer_review,color=peer_review))+
-  geom_count(shape=22,alpha=0.75)+
-  geom_smooth(show.legend=F,linetype="dashed",method='lm')+
-  labs(x="Number of Conference Papers",y=NULL,title="Book Chapter",color=NULL,fill=NULL)+
-  scale_fill_manual(values=c( "#00AFBB", "#E7B800"))+
-  scale_color_manual(values=c( "#00AFBB", "#E7B800"))+
-  guides(size = "none")+
-  df2%>%
-  ggplot(aes(x=conference_paper,y=article,fill=peer_review,color=peer_review))+
-  geom_count(shape=22,alpha=0.75)+
-  geom_smooth(show.legend=F,linetype="dashed",method='lm')+
-  labs(x="Number of Conference Papers",y=NULL,title="Article",color=NULL,fill=NULL)+
-  scale_fill_manual(values=c( "#00AFBB", "#E7B800"))+
-  scale_color_manual(values=c( "#00AFBB", "#E7B800"))+
-  guides(size = "none")->p
+df2 %>%
+  ggplot(aes(x = conference_paper, y = book, fill = peer_review, color = peer_review)) +
+  geom_count(shape = 22, alpha = 0.75) +
+  geom_smooth(show.legend = F, linetype = "dashed", method = "lm") +
+  labs(x = "Number of Conference Papers", y = NULL, title = "Book", color = NULL, fill = NULL) +
+  scale_fill_manual(values = c("#00AFBB", "#E7B800")) +
+  scale_color_manual(values = c("#00AFBB", "#E7B800")) +
+  guides(size = "none") +
+  df2 %>%
+  ggplot(aes(x = conference_paper, y = chapter, fill = peer_review, color = peer_review)) +
+  geom_count(shape = 22, alpha = 0.75) +
+  geom_smooth(show.legend = F, linetype = "dashed", method = "lm") +
+  labs(x = "Number of Conference Papers", y = NULL, title = "Book Chapter", color = NULL, fill = NULL) +
+  scale_fill_manual(values = c("#00AFBB", "#E7B800")) +
+  scale_color_manual(values = c("#00AFBB", "#E7B800")) +
+  guides(size = "none") +
+  df2 %>%
+  ggplot(aes(x = conference_paper, y = article, fill = peer_review, color = peer_review)) +
+  geom_count(shape = 22, alpha = 0.75) +
+  geom_smooth(show.legend = F, linetype = "dashed", method = "lm") +
+  labs(x = "Number of Conference Papers", y = NULL, title = "Article", color = NULL, fill = NULL) +
+  scale_fill_manual(values = c("#00AFBB", "#E7B800")) +
+  scale_color_manual(values = c("#00AFBB", "#E7B800")) +
+  guides(size = "none") -> p
 
 
-p+plot_layout(axis_titles = "collect",guides = "collect") +
-  plot_annotation(title = "Exploring the Link Between Research Outputs and Conference Paper Counts")&theme_ipsum(base_family = "Century Gothic")&
-  theme(legend.position = "top",legend.name=element_blank())
-
+p + plot_layout(axis_titles = "collect", guides = "collect") +
+  plot_annotation(title = "Exploring the Link Between Research Outputs and Conference Paper Counts") & theme_ipsum(base_family = "Century Gothic") &
+  theme(legend.position = "top", legend.name = element_blank())
 ```
 
 ## References
