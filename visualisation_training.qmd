@@ -170,6 +170,59 @@ For convenience, we can say that our problems tend to come in three varieties. S
 
 ## Perception issues: shapes and scales
 
+:::{.columns}
+:::{.column .center-content width="50%"}
+```{r}
+#| fig.height: 7
+#| fig.width: 8
+# Sample data
+library(patchwork)
+data <- data.frame(
+  category = c("A", "B", "C", "D"),
+  value = c(30,33, 35, 32)
+)
+
+# Pie chart (using coord_polar)
+pie_plot <- ggplot(data, aes(x = "", y = value, fill = category)) +
+  geom_bar(stat = "identity", width = 1, show.legend = F) +
+  coord_polar("y") +
+  theme_void(base_size = 20) +
+  scale_fill_viridis_d() +
+  geom_label(aes(label = category), position = position_stack(vjust = 0.5), show.legend = F) +
+  labs(title = "Pie Chart: Harder to distinguish differences")
+
+# Display both plots (e.g., in RMarkdown or with patchwork)
+ pie_plot
+```
+:::
+:::{.column .fragment .center-content width="50%"}
+```{r}
+#| fig.height: 7
+#| fig.width: 8
+# Bar chart
+bar_plot <- ggplot(data, aes(x = category, y = value, fill = category)) +
+  geom_bar(stat = "identity",show.legend = F) +
+  scale_fill_viridis_d() +
+  theme_minimal(base_size = 20) +
+  labs(title = "Bar Chart: Differences are clear",
+       y=NULL,
+       x = NULL)
+bar_plot
+```
+
+:::
+:::
+
+## Perception issues: shapes and scales
+
+:::{.center-content}
+![](pictures/comparing_size.png){width="55%" .lightbox}
+
+:::{.fragment}
+![](pictures/comparing_size_errors.png){width="62%" .lightbox}
+:::
+:::
+
 # Part 2: Practical Data Visualization with ggplot2
 
 ## What is ggplot2 ?
