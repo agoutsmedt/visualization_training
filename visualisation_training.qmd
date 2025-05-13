@@ -28,6 +28,27 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 ![](/pictures/pie_chart_meme.png){width="60%"}
 :::
 
+:::{.notes}
+Title rather explicit at first sights: helping you to make better visualisations. Giving you some general principles, but no "absolute" principles. Highly dependent on context (context = data + results + audience). 
+
+But let's start by at least one general principle
+:::
+
+## What's the plan for today?
+
+:::{.highlight-last}
+- General considerations
+  - Not a list of rules to apply, but a series of issues to think about when producing visualisations
+- Practical data visualisation
+  - Using ggplot2 in R
+  - Putting the reflections of the first part in context
+:::
+
+:::{.notes}
+- Short session: no time to dig to much into R, but we want to show you what we think is one of the best tool to make visualizations. (Sorry but don't use excel).
+- We'll send you the slides, as well as the code that allows for running the slides.
+:::
+
 # General Considerations
 
 ## 
@@ -36,7 +57,7 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 ::: {.column .highlight-last width="50%"}
 ### @healyDataVisualizationPractical2018 *Data Visualization: A Practical Introduction*. Princeton University Press.
 
--   General discussion on commong issues regarding data visualizations
+-   General discussion on common issues regarding data visualizations
 -   Applications to social sciences
 -   Focus on R package `ggplot2` [@ggplot2]
 :::
@@ -45,6 +66,11 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 ![](/pictures/healy_cover.png){width="90%"}
 :::
 :::
+
+:::{.notes}
+- Not much risk because already one great book doing what we wanted to do: discussing how to make visualisations, application to social sciences, questions to ask, and using ggplot2 to do that. (Our example in the practical part though). So the general considerations I will present you are fully inspired by Healy's first chapter. 
+:::
+
 
 ## Why visualizing data?
 
@@ -67,6 +93,13 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 :::
 :::
 
+:::{.notes}
+- First question, why visualizing data? Because you can identify many things that you can't see by looking at a tables with many rows and columns. Important point: visualisation is not only for displaying your final results, it's part of the research process, of exploring data and discovering patterns. Essential first step also to find problems in your data (Thomas will show you an example later): missing data, errors in some cells, etc...
+- Figure: same correlation between the points. Running a linear regression on your observation will give you more or less the same results. But by simply looking at the different scatterplot, you can see how different your data are. Second: non-linear pattern. Third and fourth, outliers influencing a lot your correlation.
+- Credibility: means you can cheat your audience/reader with nice visualization. So in a way kind of responsibility. So visualizations also comes with risks, and we can imagine there is an ethics of graphics.
+- Outside of cheating your audience, you can also cheat yourself. Visualizing data should be a reflexive and cautious approach to avoid displaying data in a "wrong" way.
+:::
+
 ## Edward Tufte's main principle
 
 ::: columns
@@ -80,9 +113,13 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 :::
 
 :::{.notes}
+- One important character in reflexions about visualizations: Edward Tufte. political scientist working notably on civil rights in the 1960s, specialized in data visualization, notably because teaching political sciences and visualizations to journalists at Yale.
+- One major principale of Tufte: data to ink ratio. Being to display rich data, but in a very simple graph. Avoid unnecessary details, redundancy in info, etc... A great principle, but not always to be taken absolutely. (See Tufte's examples of great visualizations)
 - Beyond "data to ink ratio":
-  - honesty about the data (don't cheat yourself with data)
   - in a way memorable and saying something interesting
+  - depends of your audience ! (also some types of visualizations asked for more pedagogy than others)
+  - honesty about the data (don't cheat yourself with data)
+- One of the difficulty: it's a mix of rigorous presentation of data mixed with aesthetics. It's also an issue of debating with your fellows, often helpful to see how they understand your visualizations, what you can improve, etc...
 :::
 
 ## Three hurdles to great data visualisation
@@ -97,7 +134,7 @@ data_ispole <- read.csv2(file.path(data_path, "data_ispole.csv"), sep = ";") %>%
 For convenience, we can say that our problems tend to come in three varieties. Some are strictly aesthetic. The graph we are looking at is in some way tacky, tasteless, or a hodgepodge of ugly or inconsistent design choices. Some are substantive. Here, our graph has problems that are due to the data being presented. Good taste might make things look better, but what we really need is to make better use of the data we have, or get new information and plot that instead. And some problems are perceptual. In these cases, even with good aesthetic qualities and good data, the graph will be confusing or misleading because of how people perceive and process what they are looking at. It is important to understand that these elements, while often found together, are distinct from one another.
 :::
 
-## Bad tastes
+## Bad taste
 
 :::{.columns .fragment}
 
@@ -113,6 +150,10 @@ For convenience, we can say that our problems tend to come in three varieties. S
 :::
 :::
 
+:::{.notes}
+- Why it's bad ??
+:::
+
 ## Bad data (use)
 
 :::{.columns .fragment}
@@ -126,7 +167,7 @@ For convenience, we can say that our problems tend to come in three varieties. S
 - Why it's bad?
   - cherry-picking of data
   - Misleading the audience
-- Multiply types of visualizations, vary scales, etc. to avoid cheating yourself
+- Multiply types of visualizations, vary scales, etc., to avoid cheating yourself
 :::
 :::
 
@@ -138,22 +179,28 @@ For convenience, we can say that our problems tend to come in three varieties. S
 ## Perception issues: some examples
 
 :::{.center-content}
-![](pictures/excel_3d.png){width="55%"}
-![](pictures/curve_converging.png){width="55%"}
+![](pictures/excel_3d.png){width="55%" .lightbox}
+![](pictures/curve_converging.png){width="55%" .lightbox}
+:::
+
+:::{.notes}
+- Perception may be very tricky, leading you to see some patterns that does not really exist in the data
+  - Also, creates the attempt to make your point stronger by manipulating the scales, what you have to resist.
+- Series of visual tasks to do (mechanically) to extract the information. We need to "decode" the information. Important to keep in mind where the audience may have some decoding problems.
 :::
 
 ## Perception issues: colors
 
 :::{.columns}
-:::{.column .center-content width="33%"}
+:::{.column .fragment .center-content width="33%"}
 ![](pictures/herman_grid.png){width="90%"}
 :::
 :::{.column .highlight-last .tiny-text width="33%"}
-- Hue: What color is it?
+- **Hue**: What color is it?
   - Red, blue, green, yellow, etc.
-- Chroma (or Saturation): How pure or intense is the color?
+- **Chroma** (or Saturation): How pure or intense is the color?
   - washed-out or grayish vs. vivid or rich
-- Luminance (or Lightness/Brightness): How light or dark is the color?
+- **Luminance** (or Lightness/Brightness): How light or dark is the color?
   - close to white vs. close to black
 :::
 
@@ -163,6 +210,7 @@ For convenience, we can say that our problems tend to come in three varieties. S
 :::
 
 :::{.notes}
+- Colors are tricky. Our perception of colors may be different (you have different types of color-blindness or color vision deficiency). But more generally, our perception of colors may be altered by the vincinity of colors, shadow, etc... Just an example here. 
 - Five palettes generated from R’s color space library. From top to bottom, the sequential grayscale palette varies only in luminance, or brightness. The sequential blue palette varies in both luminance and chrominance (or intensity). The third sequential palette varies in luminance, chrominance, and hue. The fourth palette is diverging, with a neutral midpoint. The fifth features balanced hues, suitable for unordered categories.
 - The upshot is that we should generally not pick colors in an ad hoc way. It is too easy to go astray. In addition to the considerations we have been discussing, we also want to avoid producing plots that confuse people who are color-blind, for example. Fortunately, almost all the work has been done for us already. Different color spaces have been defined and standardized in ways that account for these uneven or nonlinear aspects of human color perception
 - Choose appropriate palettes for what you want (types of palette like gradient, diverging, etc... means something). Taking care of different color-blindness.
@@ -223,14 +271,18 @@ bar_plot
 :::
 :::
 
-# Part 2: Practical Data Visualization with ggplot2
+:::{.notes}
+- What percentage the smaller one is of the large one. 
+:::
+
+# Practical Data Visualisation with ggplot2
 
 ## What is ggplot2 ?
 
 :::{.highlight-last .small-text}
 - **ggplot2** is a data visualization package for R developed by Hadley @ggplot2.
 - It lets you build complex plots from simple building blocks.
-- Inspired by the Grammar of Graphics (Wilkinson, 2005) — a system for describing and thinking about graphics.
+- Inspired by the Grammar of Graphics [@wilkinson2011grammar] — a system for describing and thinking about graphics.
   - *A consistent syntax for building complex graphics by combining simple components*
   - *Shifts the focus from choosing predefined chart types to systematically defining what to show and how to show it*.
 
@@ -496,7 +548,6 @@ data_ispole %>%
 #| message: false
 #| warning: false
 #| output-location: fragment
-# library(openxlsx)
 library(ggpubr) # additional themes
 library(hrbrthemes) # additional themes
 library(ggsci) # additional color palettes
@@ -663,7 +714,7 @@ ggplot(data = data_ispole, aes(x = type_de_publication, y = n_titre)) +
 
 ## Visualizing Title Length Across Publication Types
 
-::: {.panel-tabset .tiny-text .center-content}
+::: {.panel-tabset .small-text .center-content}
 
 ### New Visualisation
 
@@ -874,10 +925,6 @@ data_ispole2 %>%
 ::: 
 
 ## General Rule
-
-
-- (Almost) always use faceting when showing differences across a variable
-
 
 ::: {.fragment}
 
